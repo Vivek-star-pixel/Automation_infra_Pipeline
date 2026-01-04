@@ -32,6 +32,6 @@ steps:
     provider: 'azurerm'
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
-    commandOptions: '-auti-approve'
+    # commandOptions: '-auti-approve'
     environmentServiceNameAzureRM: 'vky_serviceconnection'
     environmentAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
