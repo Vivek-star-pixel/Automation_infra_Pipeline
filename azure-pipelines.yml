@@ -36,3 +36,11 @@ steps:
     commandOptions: '-auto-approve -var-file="terraform.tfvars"'
     environmentServiceNameAzureRM: 'vky_serviceconnection'
     environmentAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'destroy'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
+    environmentServiceNameAzureRM: 'vky_serviceconnection'
+    environmentAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
