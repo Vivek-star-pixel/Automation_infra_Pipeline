@@ -34,6 +34,19 @@ stages:
     displayName: Terraform plan
     
     steps:
+
+    - task: TerraformTask@5
+      displayName: Terraform init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
+        backendServiceArm: 'vky_serviceconnection'
+        backendAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
+        backendAzureRmResourceGroupName: 'vky'
+        backendAzureRmStorageAccountName: 'keystroke11111'
+        backendAzureRmContainerName: 'mysecrettffile'
+        backendAzureRmKey: 'secretfile1.tfstate'
     - task: TerraformTask@5
       displayName: Terraform plan
       inputs:
