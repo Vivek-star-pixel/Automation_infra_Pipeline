@@ -3,17 +3,16 @@ trigger: none
 pool: vky
 
 stages:
-- stage: Terraform_init 
-
-
+- stage: Terraform_install
   jobs:
   - job: Terraform_init
     displayName: Terraform init
-      
+    
     steps:
     - task: TerraformInstaller@1
       inputs:
         terraformVersion: 'latest'
+
 
     - task: TerraformTask@5
       displayName: Terraform init
@@ -28,6 +27,13 @@ stages:
         backendAzureRmContainerName: 'mysecrettffile'
         backendAzureRmKey: 'secretfile1.tfstate'
 
+
+- stage: Terraform_plan
+  jobs:
+  - job: Terraform_init
+    displayName: Terraform plan
+    
+    steps:
     - task: TerraformTask@5
       displayName: Terraform plan
       inputs:
@@ -39,6 +45,12 @@ stages:
         environmentAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
 
 
+- stage: Terraform_apply
+  jobs:
+  - job: Terraform_init
+    displayName: Terraform init & apply
+    
+    
   - job: Terraform_apply
     displayName: Terraform apply
     dependsOn: Terraform_init
