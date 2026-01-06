@@ -1,5 +1,7 @@
 terraform {
   required_version = ">= 1.5.0" #updated batao
+
+  safdsdffffas
   backend "azurerm" {
     resource_group_name  = "vky"
     storage_account_name = "keystroke11111"
