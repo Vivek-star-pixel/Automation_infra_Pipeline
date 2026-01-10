@@ -1,14 +1,14 @@
 rg_group1 = {
   RG1 = {
     rg_name  = "yashna"
-    location = "West US 2"
+    location = "East US 2"
   }
 }
 
 vnet_name1 = {
   vnet1 = {
     vnet_name     = "vivek-vnet"
-    location      = "West US 2"
+    location      = "East US 2"
     rg_name       = "yashna"
     address_space = ["10.0.0.0/16"]
     dns_servers   = ["10.0.0.4", "10.0.0.5"]
@@ -33,7 +33,7 @@ name_vm = {
   vm1 = {
     vm_name        = "vky1-vm"
     nic_name       = "vky-nic"
-    location       = "West US 2"
+    location       = "East US 2"
     rg_name        = "yashna"
     size           = "Standard_D2s_v3"
     admin_username = "Vivek@2025"
@@ -68,7 +68,7 @@ name_vm = {
   vm2 = {
     vm_name        = "vky2-vm"
     nic_name       = "vky-nic2"
-    location       = "West US 2"
+    location       = "East US 2"
     rg_name        = "yashna"
     size           = "Standard_D2s_v3"
     admin_username = "Vivek@2025"
@@ -108,13 +108,13 @@ name_pip = {
   pip1 = {
     pip_name = "vky-pip1"
     rg_name  = "yashna"
-    location = "West US 2"
+    location = "East US 2"
   }
 
   pip2 = {
     pip_name = "vky-pip2"
     rg_name  = "yashna"
-    location = "West US 2"
+    location = "East US 2"
   }
 }
 
@@ -123,7 +123,7 @@ server_mssql = {
   server_mssql1 = {
     mssql_server_name            = "vky-server"
     rg_name                      = "yashna"
-    location                     = "West US 2"
+    location                     = "East US 2"
     administrator_login          = "Vivek@2026"
     administrator_login_password = "Vivek@12345"
 
