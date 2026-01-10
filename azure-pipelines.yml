@@ -31,17 +31,10 @@ stages:
 
 
 # ---------------- Terraform Plan ----------------
-- stage: Terraform_plan
-  displayName: Terraform Plan
-  dependsOn: Terraform_install
-  jobs:
+
   - job: Terraform_plan
     displayName: Terraform plan
     steps:
-
-    - task: TerraformInstaller@1
-      inputs:
-        terraformVersion: 'latest'
 
     - task: TerraformTask@5
       displayName: Terraform init
@@ -70,7 +63,7 @@ stages:
 # ---------------- Terraform Apply ----------------
 - stage: Terraform_apply
   displayName: Terraform Apply
-  dependsOn: Terraform_plan
+  dependsOn: Terraform_install
   jobs:
 
   - job: Terraform_apply
