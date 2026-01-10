@@ -44,7 +44,7 @@ stages:
         backendServiceArm: 'vky_serviceconnection'
         backendAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
         backendAzureRmResourceGroupName: 'vky'
-        backendAzureRmStorageAccountName: 'keystroke11111'
+        backendAzureRmStorageAccountName: 'keystroke111111'
         backendAzureRmContainerName: 'mysecrettffile'
         backendAzureRmKey: 'secretfile1.tfstate'
     - task: TerraformTask@5
@@ -79,7 +79,7 @@ stages:
         backendServiceArm: 'vky_serviceconnection'
         backendAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
         backendAzureRmResourceGroupName: 'vky'
-        backendAzureRmStorageAccountName: 'keystroke11111'
+        backendAzureRmStorageAccountName: 'keystroke111111'
         backendAzureRmContainerName: 'mysecrettffile'
         backendAzureRmKey: 'secretfile1.tfstate'
 
