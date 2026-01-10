@@ -2,104 +2,73 @@ trigger: none
 
 pool: vky
 
+variables:
+  tfVersion: 'latest'
+  workDir: '$(System.DefaultWorkingDirectory)/ENV/dev'
+
 stages:
-- stage: Terraform_install
+
+# ---------------- INIT ----------------
+- stage: Terraform_Init
+  displayName: Terraform Init
   jobs:
-  - job: Terraform_init
-    displayName: Terraform init
-    
+  - job: init
     steps:
     - task: TerraformInstaller@1
       inputs:
-        terraformVersion: 'latest'
-
+        terraformVersion: $(tfVersion)
 
     - task: TerraformTask@5
       displayName: Terraform init
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
+        workingDirectory: $(workDir)
         backendServiceArm: 'vky_serviceconnection'
-        backendAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
         backendAzureRmResourceGroupName: 'vky'
         backendAzureRmStorageAccountName: 'keystroke111111'
         backendAzureRmContainerName: 'mysecrettffile'
         backendAzureRmKey: 'secretfile1.tfstate'
 
 
-- stage: Terraform_plan
+# ---------------- PLAN ----------------
+- stage: Terraform_Plan
+  displayName: Terraform Plan
+  dependsOn: Terraform_Init
   jobs:
-  - job: Terraform_init
-    displayName: Terraform plan
-    
+  - job: plan
     steps:
-
-    - task: TerraformTask@5
-      displayName: Terraform init
+    - task: TerraformInstaller@1
       inputs:
-        provider: 'azurerm'
-        command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
-        backendServiceArm: 'vky_serviceconnection'
-        backendAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
-        backendAzureRmResourceGroupName: 'vky'
-        backendAzureRmStorageAccountName: 'keystroke111111'
-        backendAzureRmContainerName: 'mysecrettffile'
-        backendAzureRmKey: 'secretfile1.tfstate'
+        terraformVersion: $(tfVersion)
+
     - task: TerraformTask@5
       displayName: Terraform plan
       inputs:
         provider: 'azurerm'
         command: 'plan'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
+        workingDirectory: $(workDir)
         commandOptions: '-var-file="terraform.tfvars"'
         environmentServiceNameAzureRM: 'vky_serviceconnection'
-        environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
 
 
-- stage: Terraform_apply
+# ---------------- APPLY ----------------
+- stage: Terraform_Apply
+  displayName: Terraform Apply
+  dependsOn: Terraform_Plan
+  condition: succeeded()
   jobs:
-  - job: Terraform_init
-    displayName: Terraform init & apply
-    
-    
-  - job: Terraform_apply
-    displayName: Terraform apply
-    dependsOn: Terraform_init
-
+  - job: apply
     steps:
-    
-    - task: TerraformTask@5
-      
+    - task: TerraformInstaller@1
       inputs:
-        provider: 'azurerm'
-        command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
-        backendServiceArm: 'vky_serviceconnection'
-        backendAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
-        backendAzureRmResourceGroupName: 'vky'
-        backendAzureRmStorageAccountName: 'keystroke111111'
-        backendAzureRmContainerName: 'mysecrettffile'
-        backendAzureRmKey: 'secretfile1.tfstate'
+        terraformVersion: $(tfVersion)
 
     - task: TerraformTask@5
       displayName: Terraform apply
       inputs:
         provider: 'azurerm'
         command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
+        workingDirectory: $(workDir)
+        commandOptions: '-auto-approve'
         environmentServiceNameAzureRM: 'vky_serviceconnection'
-        environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
-
-    - task: TerraformTask@5
-      displayName: Terraform destroy
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
-        environmentServiceNameAzureRM: 'vky_serviceconnection'
-        environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
-
-
-
