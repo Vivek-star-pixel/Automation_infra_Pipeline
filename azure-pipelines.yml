@@ -63,9 +63,27 @@ stages:
 
 
 # ---------------- Terraform Apply ----------------
+- stage: Manual_validation
+  pool: server
+  displayName: Manual_validation
+  dependsOn: Terraform_install
+  jobs:
+
+  - job: Terraform_manual_validation
+    displayName: Terraform validate
+    steps:
+    - task: ManualValidation@1
+      inputs:
+        notifyUsers: 'mohkarvivek99@gmail.com'
+        approvers: 'mohkarvivek99@gmail.com'
+        instructions: 'Without any delay, pls approve'
+
+
+
+# ---------------- Terraform Apply ----------------
 - stage: Terraform_apply
   displayName: Terraform Apply
-  dependsOn: Terraform_install
+  dependsOn: Manual_validation
   jobs:
 
   - job: Terraform_apply
