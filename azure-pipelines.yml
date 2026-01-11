@@ -58,7 +58,7 @@ stages:
           cd ENV/dev
           tflint --init
           tflint
-          tflint --loglevel=info
+         
 
     # Terraform init
     - task: TerraformTask@5
