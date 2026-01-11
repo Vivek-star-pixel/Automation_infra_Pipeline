@@ -1,8 +1,7 @@
 rg_group1 = {
   RG1 = {
     rg_name  = "yashna"
-    location = "East US 2"
-    location = "East US 2"
+   location = "East US 2"
   }
 }
 
@@ -111,15 +110,13 @@ name_pip = {
   pip1 = {
     pip_name = "vky-pip1"
     rg_name  = "yashna"
-    location = "East US 2"
-    location = "East US 2"
+   location = "East US 2"
   }
 
   pip2 = {
     pip_name = "vky-pip2"
     rg_name  = "yashna"
-    location = "East US 2"
-    location = "East US 2"
+   location = "East US 2"
   }
 }
 
