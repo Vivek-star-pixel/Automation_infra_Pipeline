@@ -2,12 +2,13 @@ rg_group1 = {
   RG1 = {
     rg_name  = "yashna"
     location = "East US 2"
+    location = "East US 2"
   }
 }
 
 vnet_name1 = {
   vnet1 = {
-    vnet_name     = "vivek-vnet"
+    vnet_name     = "vivek1-vnet"
     location      = "East US 2"
     rg_name       = "yashna"
     address_space = ["10.0.0.0/16"]
@@ -34,11 +35,12 @@ name_vm = {
     vm_name        = "vky1-vm"
     nic_name       = "vky-nic"
     location       = "East US 2"
+    location       = "East US 2"
     rg_name        = "yashna"
     size           = "Standard_D2s_v3"
     admin_username = "Vivek@2025"
     admin_password = "Vivek@12345"
-    vnet_name      = "vivek-vnet"
+    vnet_name      = "vivek1-vnet"
     subnet_name    = "subnet1"
     pip_name       = "vky-pip1"
 
@@ -69,11 +71,12 @@ name_vm = {
     vm_name        = "vky2-vm"
     nic_name       = "vky-nic2"
     location       = "East US 2"
+    location       = "East US 2"
     rg_name        = "yashna"
     size           = "Standard_D2s_v3"
     admin_username = "Vivek@2025"
     admin_password = "Vivek@12345"
-    vnet_name      = "vivek-vnet"
+    vnet_name      = "vivek1-vnet"
     subnet_name    = "subnet2"
     pip_name       = "vky-pip2"
 
@@ -109,11 +112,13 @@ name_pip = {
     pip_name = "vky-pip1"
     rg_name  = "yashna"
     location = "East US 2"
+    location = "East US 2"
   }
 
   pip2 = {
     pip_name = "vky-pip2"
     rg_name  = "yashna"
+    location = "East US 2"
     location = "East US 2"
   }
 }
@@ -121,8 +126,9 @@ name_pip = {
 
 server_mssql = {
   server_mssql1 = {
-    mssql_server_name            = "vky-server"
+    mssql_server_name            = "vicky-server"
     rg_name                      = "yashna"
+    location                     = "East US 2"
     location                     = "East US 2"
     administrator_login          = "Vivek@2026"
     administrator_login_password = "Vivek@12345"
@@ -141,7 +147,7 @@ database_sql = {
     max_size_gb       = 2
     sku_name          = "S0"
     enclave_type      = "VBS"
-    mssql_server_name = "vky-server"
+    mssql_server_name = "vicky-server"
 
   }
 }
