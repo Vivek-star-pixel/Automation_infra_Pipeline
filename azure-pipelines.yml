@@ -16,6 +16,14 @@ stages:
         version: 'v1.26.0'
         debug: true
 
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd ENV/dev
+          tflint --init
+          tflint
+
     - task: TerraformInstaller@1
       inputs:
         terraformVersion: 'latest'
