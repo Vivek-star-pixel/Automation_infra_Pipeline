@@ -24,13 +24,25 @@ stages:
         terraformVersion: 'latest'
 
     # ✅ TFLint install
+
+
     - task: PowerShell@2
       displayName: Install TFLint
       inputs:
         targetType: 'inline'
         script: |
-          choco install tflint -y
+          $version = "v0.54.0"
+          $url = "https://github.com/terraform-linters/tflint/releases/download/$version/tflint_windows_amd64.zip"
+          $out = "$env:TEMP\tflint.zip"
+
+          Invoke-WebRequest -Uri $url -OutFile $out
+          Expand-Archive $out -DestinationPath "$env:TEMP\tflint" -Force
+
+          # Agent tools folder me copy
+          Copy-Item "$env:TEMP\tflint\tflint.exe" "C:\Windows\System32\tflint.exe" -Force
+
           tflint --version
+
 
     # ✅ TFLint run
     - task: PowerShell@2
