@@ -34,14 +34,19 @@ stages:
           $version = "v0.54.0"
           $url = "https://github.com/terraform-linters/tflint/releases/download/$version/tflint_windows_amd64.zip"
           $out = "$env:TEMP\tflint.zip"
+          $dest = "$env:AGENT_TOOLSDIRECTORY\tflint"
 
+          Write-Host "Downloading TFLint..."
           Invoke-WebRequest -Uri $url -OutFile $out
-          Expand-Archive $out -DestinationPath "$env:TEMP\tflint" -Force
 
-          # Agent tools folder me copy
-          Copy-Item "$env:TEMP\tflint\tflint.exe" "C:\Windows\System32\tflint.exe" -Force
+          Write-Host "Extracting..."
+          Expand-Archive $out -DestinationPath $dest -Force
+
+          Write-Host "Adding to PATH..."
+          Write-Host "##vso[task.prependpath]$dest"
 
           tflint --version
+
 
 
     # ✅ TFLint run
