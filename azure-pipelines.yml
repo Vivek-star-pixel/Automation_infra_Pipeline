@@ -11,12 +11,30 @@ stages:
   - job: Terraform_init
     displayName: Terraform init
     steps:
+
+    # tfsec
     - task: tfsec@1
       inputs:
         version: 'v1.26.0'
         debug: true
 
+    # Terraform install
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
+
+    # ✅ TFLint install
     - task: PowerShell@2
+      displayName: Install TFLint
+      inputs:
+        targetType: 'inline'
+        script: |
+          choco install tflint -y
+          tflint --version
+
+    # ✅ TFLint run
+    - task: PowerShell@2
+      displayName: Run TFLint
       inputs:
         targetType: 'inline'
         script: |
@@ -24,10 +42,7 @@ stages:
           tflint --init
           tflint
 
-    - task: TerraformInstaller@1
-      inputs:
-        terraformVersion: 'latest'
-
+    # Terraform init
     - task: TerraformTask@5
       displayName: Terraform init
       inputs:
