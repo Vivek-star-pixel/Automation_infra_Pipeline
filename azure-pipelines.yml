@@ -107,7 +107,7 @@ stages:
         environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
 
 
-# ---------------- Terraform Apply ----------------
+# ---------------- Terraform Manual validation ----------------
 - stage: Manual_validation
   pool: server
   displayName: Manual_validation
