@@ -163,12 +163,12 @@ stages:
         environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
 
     # ⚠ Normally destroy alag pipeline me hota hai
-    - task: TerraformTask@5
-      displayName: Terraform destroy
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
-        # commandOptions: '-auto-approve'
-        environmentServiceNameAzureRM: 'vky_serviceconnection'
-        environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
+    # - task: TerraformTask@5
+    #   displayName: Terraform destroy
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'destroy'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
+    #     # commandOptions: '-auto-approve'
+    #     environmentServiceNameAzureRM: 'vky_serviceconnection'
+    #     environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
