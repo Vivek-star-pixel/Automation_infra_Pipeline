@@ -3,17 +3,19 @@ trigger: none
 pool: vky
 
 stages:
+
+# ---------------- Terraform Install & Init ----------------
 - stage: Terraform_install
+  displayName: Terraform Install & Init
   jobs:
   - job: Terraform_init
     displayName: Terraform init
-    
     steps:
+
     - task: TerraformInstaller@1
       inputs:
         terraformVersion: 'latest'
 
-
     - task: TerraformTask@5
       displayName: Terraform init
       inputs:
@@ -21,20 +23,21 @@ stages:
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
         backendServiceArm: 'vky_serviceconnection'
-        backendAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
+        backendAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
         backendAzureRmResourceGroupName: 'vky'
-        backendAzureRmStorageAccountName: 'keystroke11111'
+        backendAzureRmStorageAccountName: 'keystroke111111'
         backendAzureRmContainerName: 'mysecrettffile'
         backendAzureRmKey: 'secretfile1.tfstate'
 
 
-- stage: Terraform_plan
-  jobs:
-  - job: Terraform_init
+# ---------------- Terraform Plan ----------------
+
+  - job: Terraform_plan
     displayName: Terraform plan
-    
     steps:
-
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
     - task: TerraformTask@5
       displayName: Terraform init
       inputs:
@@ -42,11 +45,12 @@ stages:
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
         backendServiceArm: 'vky_serviceconnection'
-        backendAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
+        backendAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
         backendAzureRmResourceGroupName: 'vky'
-        backendAzureRmStorageAccountName: 'keystroke11111'
+        backendAzureRmStorageAccountName: 'keystroke111111'
         backendAzureRmContainerName: 'mysecrettffile'
         backendAzureRmKey: 'secretfile1.tfstate'
+
     - task: TerraformTask@5
       displayName: Terraform plan
       inputs:
@@ -55,31 +59,51 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
         commandOptions: '-var-file="terraform.tfvars"'
         environmentServiceNameAzureRM: 'vky_serviceconnection'
-        environmentAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
+        environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
 
 
-- stage: Terraform_apply
+# ---------------- Terraform Apply ----------------
+- stage: Manual_validation
+  pool: server
+  displayName: Manual_validation
+  dependsOn: Terraform_install
   jobs:
-  - job: Terraform_init
-    displayName: Terraform init & apply
-    
-    
-  - job: Terraform_apply
-    displayName: Terraform apply
-    dependsOn: Terraform_init
 
+  - job: Terraform_manual_validation
+    displayName: Terraform validate
     steps:
-    
+    - task: ManualValidation@1
+      inputs:
+        notifyUsers: 'mohkarvivek99@gmail.com'
+        approvers: 'mohkarvivek99@gmail.com'
+        instructions: 'Without any delay, pls approve'
+
+
+
+# ---------------- Terraform Apply ----------------
+- stage: Terraform_apply
+  displayName: Terraform Apply
+  dependsOn: Manual_validation
+  jobs:
+
+  - job: Terraform_apply
+    displayName: Terraform init & apply
+    steps:
+
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
+
     - task: TerraformTask@5
-      
+      displayName: Terraform init
       inputs:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
         backendServiceArm: 'vky_serviceconnection'
-        backendAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
+        backendAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
         backendAzureRmResourceGroupName: 'vky'
-        backendAzureRmStorageAccountName: 'keystroke11111'
+        backendAzureRmStorageAccountName: 'keystroke111111'
         backendAzureRmContainerName: 'mysecrettffile'
         backendAzureRmKey: 'secretfile1.tfstate'
 
@@ -89,17 +113,17 @@ stages:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
+        commandOptions: '-auto-approve'
         environmentServiceNameAzureRM: 'vky_serviceconnection'
-        environmentAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
+        environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
 
+    # ⚠ Normally destroy alag pipeline me hota hai
     - task: TerraformTask@5
       displayName: Terraform destroy
       inputs:
         provider: 'azurerm'
         command: 'destroy'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
+        commandOptions: '-auto-approve'
         environmentServiceNameAzureRM: 'vky_serviceconnection'
-        environmentAzureRmOverrideSubscriptionID: 'a0366c1d-7e23-4176-93a9-0e084725b2d4'
-
-
-
+        environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
