@@ -2,10 +2,10 @@ terraform {
   required_version = ">= 1.5.0" #updated batao
   backend "azurerm" {
     resource_group_name  = "vky"
-    storage_account_name = "keystroke1111111"
+    storage_account_name = "keystroke111111"
     container_name       = "mysecrettffile"
     key                  = "secretfile1.tfstate"
-    subscription_id      = "9e5164c3-5dce-42e1-abfe-6be582de11d8"
+    subscription_id      = "7e450572-1056-4117-9e7b-97e717138408"
   }
   required_providers {
     azurerm = {
@@ -17,5 +17,5 @@ terraform {
 }
 provider "azurerm" {
   features {}
-  subscription_id = "9e5164c3-5dce-42e1-abfe-6be582de11d8"
+  subscription_id = "7e450572-1056-4117-9e7b-97e717138408"
 }
