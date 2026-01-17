@@ -12,10 +12,55 @@ stages:
     displayName: Terraform init
     steps:
 
+    # tfsec
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        debug: true
+
+    # Terraform install
     - task: TerraformInstaller@1
       inputs:
         terraformVersion: 'latest'
 
+    # ✅ TFLint install
+
+
+    - task: PowerShell@2
+      displayName: Install TFLint
+      inputs:
+        targetType: 'inline'
+        script: |
+          $version = "v0.54.0"
+          $url = "https://github.com/terraform-linters/tflint/releases/download/$version/tflint_windows_amd64.zip"
+          $out = "$env:TEMP\tflint.zip"
+          $dest = "$env:AGENT_TOOLSDIRECTORY\tflint"
+
+          Write-Host "Downloading TFLint..."
+          Invoke-WebRequest -Uri $url -OutFile $out
+
+          Write-Host "Extracting..."
+          Expand-Archive $out -DestinationPath $dest -Force
+
+          Write-Host "Adding to PATH..."
+          Write-Host "##vso[task.prependpath]$dest"
+
+          tflint --version
+
+
+
+    # ✅ TFLint run
+    - task: PowerShell@2
+      displayName: Run TFLint
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd ENV/dev
+          tflint --init
+          tflint
+         
+
+    # Terraform init
     - task: TerraformTask@5
       displayName: Terraform init
       inputs:
@@ -62,7 +107,7 @@ stages:
         environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
 
 
-# ---------------- Terraform Apply ----------------
+# ---------------- Terraform Manual validation ----------------
 - stage: Manual_validation
   pool: server
   displayName: Manual_validation
@@ -113,17 +158,17 @@ stages:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
-        commandOptions: '-auto-approve'
+        # commandOptions: '-auto-approve'
         environmentServiceNameAzureRM: 'vky_serviceconnection'
         environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
 
     # ⚠ Normally destroy alag pipeline me hota hai
-    - task: TerraformTask@5
-      displayName: Terraform destroy
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
-        commandOptions: '-auto-approve'
-        environmentServiceNameAzureRM: 'vky_serviceconnection'
-        environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
+    # - task: TerraformTask@5
+    #   displayName: Terraform destroy
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'destroy'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/ENV/dev'
+    #     # commandOptions: '-auto-approve'
+    #     environmentServiceNameAzureRM: 'vky_serviceconnection'
+    #     environmentAzureRmOverrideSubscriptionID: '7e450572-1056-4117-9e7b-97e717138408'
